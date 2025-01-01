@@ -1,0 +1,72 @@
+/* project1.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f0f0f000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.draggable-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Central non-draggable video */
+#central-video {
+    position: absolute;
+    top: 28%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    z-index: 0; /* Ensure it's underneath other draggable elements */
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    transform: scale(1.9);
+}
+
+/* Draggable elements with scattered positions */
+#draggable-image-1 {
+    position: absolute;
+    top: 10%; /* Scattered position */
+    left: 22%;
+    transform: rotate(-3deg); /* Minimal rotation */
+    width: 900px; /* Similar size */
+    cursor: grab;
+    z-index: 5;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+#draggable-image-2 {
+    position: absolute;
+    top: 33%; /* Scattered position */
+    left: 35%;
+    transform: rotate(-2deg); /* Minimal rotation */
+    width: 900px; /* Similar size */
+    cursor: grab;
+    z-index: 3;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+#draggable-image-3 {
+    position: absolute;
+    top: 23%; /* Scattered position */
+    right: 35%;
+    transform: rotate(2deg); /* Minimal rotation */
+    width: 900px; /* Similar size */
+    cursor: grab;
+    z-index: 4;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+#draggable-image-1:active, #draggable-image-2:active, #draggable-image-3:active,
+#draggable-video:active {
+    cursor: grabbing;
+    opacity: 0.9;
+}
+

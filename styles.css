@@ -1,0 +1,277 @@
+body { 
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    overflow-x: hidden;
+    cursor: url('Images/cursor_32x32.png'), auto; /* Custom cursor */
+    user-select: none; /* Prevent text selection globally */
+}
+
+/* Timeline Container */
+.timeline-container {
+    position: relative;
+    width: 90%;
+    margin: 50px auto;
+}
+
+/* Timeline Styling */
+.timeline {
+    position: relative;
+    height: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.timeline-line {
+    position: absolute;
+    width: 105%; /* Extend slightly to account for the buffer zone */
+    height: 32px;
+    background: linear-gradient(90deg, #e9ade4, #eb576d);
+    animation: gradient-move 5s infinite alternate; /* Playful gradient animation */
+    top: 50%;
+    transform: translateY(-50%);
+    left: -20px; /* Shift left to align visually */
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+@keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.timeline-points {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.point {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 4px solid black;
+    transform: rotate(45deg);
+    position: relative;
+    z-index: 1;
+    animation: bounce 1.5s infinite; /* Add playful bouncing to keyframes */
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(45deg); }
+    50% { transform: translateY(-10px) rotate(45deg); }
+}
+
+.point.active {
+    animation: none; /* Stop bouncing */
+    background-color: #7aa2ed;
+    border-color: #3870d7;
+}
+
+.timeline-playhead {
+    position: absolute;
+    width: 5px;
+    height: 500px;
+    background-color: #3870d7;
+    left: 0;
+    top: -10px;
+    z-index: 1000;
+    cursor: grab;
+}
+
+.timeline-playhead::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 40px;
+    background-color: #3870d7;
+    clip-path: polygon(10% 100%, 10% 50%, 50% 0%, 90% 50%, 90% 100%);
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+    z-index: 1000;
+    cursor: grab;
+}
+
+.timeline-playhead:active {
+    cursor: grabbing;
+}
+
+/* Video Styling */
+.videos-top, .videos-bottom {
+    display: flex;
+    justify-content: space-around;
+    margin: 90px 0;
+    gap: 15px;
+}
+
+.project {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    width: 380px;
+    height: 200px;
+    border-radius: 16px;
+    opacity: 0; /* Hidden initially */
+    transform: scale(0.5);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.image.active {
+    opacity: 1; /* Visible only when active */
+    transform: scale(1);
+}
+
+/* Lower video opacity on hover */
+.project:hover .image.active {
+    opacity: 0.4;
+    transform: scale(1.09); /* Slightly enlarge on hover */
+}
+
+/* View Project Button Styling */
+.view-project-btn { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3870d7;
+    color: white;
+    border: none;
+    padding: 15px 30px; /* Increased padding for larger button */
+    font-size: 18px; /* Increased font size */
+    font-weight: bold;
+    border-radius: 8px; /* Slightly larger border radius */
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
+    text-decoration: none; /* Remove underline for links */
+}
+
+.project .view-project-btn:hover {
+    background-color: #193463;   
+}
+
+/* Show "View Project" button only on hover over active video */
+.project:hover .view-project-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Caption Styling */
+.caption {
+    font-size: 16px;
+    color: #333;
+    margin: 10px 0 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.caption.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+/* Modal Background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Black with transparency */
+    backdrop-filter: blur(10px); /* Blurs the background */
+    z-index: 1000; /* Ensure it overlays everything */
+  }
+  
+/* Modal Overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with transparency */
+    z-index: 1000; /* Ensure it's above everything */
+    overflow: hidden; /* Prevent scrolling */
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 0; /* Remove any padding that might push it down */
+  }
+  
+  
+  /* Close Button */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+  }
+
+  /* Modal Overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with transparency */
+    z-index: 1000; /* Ensure it's above everything */
+    overflow: hidden; /* Prevent scrolling */
+    display: flex; /* Center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    position: relative;     
+    width: 900%; /* Take up most of the screen */
+    max-width: 1600px; /* Limit the max width */
+    height: 100%; /* Take up most of the height */
+    background-color: rgba(255, 255, 255, 0.216); /* Slightly transparent white */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+    overflow: hidden; /* Prevent content overflow */
+  }
+  
+  /* Close Button */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    font-size: 60px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.675);
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1100; /* Keep the close button on top */
+  }
+  
+  /* Iframe for Full Content */
+  iframe {
+    width: 100%; /* Full width inside modal */
+    height: 100%; /* Full height inside modal */
+    border: none; /* Remove iframe border */
+  }
+  
